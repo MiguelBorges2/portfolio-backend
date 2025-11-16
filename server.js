@@ -9,8 +9,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.get("/download/curriculo", (req, res) => {
-   const filePath = path.join(__dirname, "files", "MiguelBRCurriculo.pdf");
-   res.download(filePath, "MiguelBRCurriculo.pdf");
+    const filePath = path.join(__dirname, "files", "MiguelBRCurriculo.pdf");
+  
+  // Envia o PDF como buffer (bytes) no corpo da resposta
+  const fs = require("fs");
+  const data = fs.readFileSync(filePath);
+  
+  res.setHeader("Content-Type", "application/pdf"); // tipo de arquivo
+  res.send(data); // envia os dados brutos
 });
 
 app.listen(PORT, () => {
